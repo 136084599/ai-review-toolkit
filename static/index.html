@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>清审 · 内容预审工作台</title>
+  <meta name="description" content="面向央媒供稿、新闻与政务宣传的 AI 辅助预审工具">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/static/style.css"><link rel="stylesheet" href="/static/video-review.css"><script src="/static/video-review.js" defer></script><script src="/static/content-review.js" defer></script><script src="/static/app.js" defer></script>
+</head>
+<body>
+<svg class="svg-defs" aria-hidden="true"><defs>
+<symbol id="i-document" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4z"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 2 7M3 4v7h7M12 7v5l3 2"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="3"/><circle cx="16" cy="17" r="3"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/></symbol>
+</defs></svg>
+<aside class="sidebar">
+  <a class="brand" href="/"><span class="brand-symbol"><svg><use href="#i-check"/></svg></span><span>清审<span class="brand-sub">QINGSHEN AI</span></span></a>
+  <div class="workspace-label">内容预审工作台 <span>LOCAL</span></div>
+  <nav aria-label="主导航">
+    <button class="nav active" data-page="text"><svg><use href="#i-document"/></svg>AI 审稿<span class="nav-dot"></span></button>
+    <button class="nav" data-page="video"><svg><use href="#i-video"/></svg>AI 审视频</button>
+    <div class="nav-separator"></div>
+    <button class="nav" data-page="history"><svg><use href="#i-history"/></svg>审核记录</button>
+    <button class="nav" data-page="settings"><svg><use href="#i-settings"/></svg>模型设置</button>
+  </nav>
+  <div class="sidebar-note"><svg><use href="#i-shield"/></svg><strong>让每一次送审更从容</strong><p>AI 提前发现问题<br>专业判断，始终由你完成</p></div>
+  <div class="sidebar-footer"><span class="status-dot"></span>本地工作空间 <span>v1.2</span></div>
+</aside>
+<div class="shell">
+  <header class="topbar"><div>工作空间 <span>/</span> <b id="breadcrumb">AI 审稿</b></div><div class="top-right"><span class="local-badge">本地存储</span><span class="avatar">审</span></div></header>
+  <main>
+    <section class="page" id="page-text">
+      <div class="page-heading"><div><div class="eyebrow">REVIEW BEFORE RELEASE</div><h1>好内容，经得起每一次审阅<span>。</span></h1><p>为央媒供稿、新闻报道与政务宣传，多一道细致的检查。</p></div><span class="connection badge">正在检查服务</span></div>
+      <div class="mode-tabs"><button class="selected" data-page="text"><svg><use href="#i-document"/></svg>稿件预审</button><button data-page="video"><svg><use href="#i-video"/></svg>视频预审</button><span>先发现，再完善，后送审</span></div>
+      <div class="editor-layout">
+        <form id="text-form" class="card editor-card">
+          <div class="card-heading"><h2>待审稿件</h2><button type="button" class="text-button" id="load-example">试用示例 <span>↗</span></button></div>
+          <div class="field"><label for="text-title">稿件标题 <span>选填</span></label><input id="text-title" maxlength="120" placeholder="输入稿件标题，方便查找审核记录"></div>
+          <div class="field body-field"><div class="label-row"><label for="text-content">正文内容</label><label class="file-link" for="text-file"><svg><use href="#i-upload"/></svg>导入 TXT</label><input type="file" id="text-file" accept=".txt,.md" hidden></div><textarea id="text-content" rows="13" maxlength="30000" required placeholder="在这里粘贴需要审核的稿件…&#10;&#10;我们将检查用字用语、数字日期、内容逻辑与表述准确性，并给出可定位的原文证据和修改建议。"></textarea><div class="editor-bottom"><span><span class="mini-dot"></span>内容仅在提交审核时发送至 DeepSeek</span><span id="word-count">0 / 30,000</span></div></div>
+          <details class="reference-details"><summary>添加参考资料与审核要求 <span>提高比对准确性</span></summary><div class="field"><label for="text-reference">权威原稿 / 已核实资料</label><textarea id="text-reference" rows="4" maxlength="20000" placeholder="粘贴权威原稿、采访记录或已确认的数字与名称。模型会标出差异，不会自行上网核验。"></textarea></div><div class="field"><label for="text-instructions">补充审核要求</label><textarea id="text-instructions" rows="2" maxlength="3000" placeholder="例如：核对人名职务、检查标题与正文是否一致"></textarea></div></details>
+          <div class="form-actions"><label class="check-label"><input id="text-ai" type="checkbox" checked>启用 DeepSeek 语义预审</label><button class="primary" type="submit"><svg><use href="#i-spark"/></svg>开始预审 <svg><use href="#i-arrow"/></svg></button></div>
+        </form>
+        <aside class="guide-column">
+          <div class="guide-card"><div class="guide-icon"><svg><use href="#i-shield"/></svg></div><div class="eyebrow">A SECOND PAIR OF EYES</div><h2>送审前，把细节<br>再看一遍。</h2><p>聚焦编辑工作中的常见疏漏，让你的精力留给内容本身。</p><div class="focus-list"><div><span>01</span><section><b>文字与表达</b><p>错别字、语病、标点与措辞歧义</p></section></div><div><span>02</span><section><b>事实与一致性</b><p>数字、日期、专名与参考资料比对</p></section></div><div><span>03</span><section><b>发布前复核</b><p>来源、隐私与需要核实的表述</p></section></div></div><div class="guide-foot">每一条问题，都应有据可查 <svg><use href="#i-check"/></svg></div></div>
+          <div class="quiet-note"><span>i</span><p>预审结果供编辑参考。领导职务、政策表述等时效性信息，请对照权威资料确认。</p></div>
+        </aside>
+      </div>
+    </section>
+    <section class="page" id="page-video" hidden>
+      <div class="page-heading"><div><div class="eyebrow">CONTENT COMES FIRST.</div><h1>先审内容，再看技术细节<span>。</span></h1><p>结合口播、字幕、画面与参考资料，审读新闻事实、表达语境和叙事逻辑。</p></div><span class="badge">八个内容维度</span></div>
+      <div class="mode-tabs"><button data-page="text"><svg><use href="#i-document"/></svg>稿件预审</button><button class="selected" data-page="video"><svg><use href="#i-video"/></svg>视频预审</button><span>每个疑点，定位到时间点</span></div>
+      <div class="editor-layout"><form id="video-form" class="card editor-card">
+        <div class="card-heading"><h2>待审视频</h2><span class="muted">单条最长 30 分钟</span></div>
+        <label class="dropzone" id="dropzone" for="video-file"><span class="upload-icon"><svg><use href="#i-upload"/></svg></span><strong id="video-filename">点击选择，或拖拽视频到这里</strong><span id="video-fileinfo">MP4、MOV、MKV、WebM、M4V · 最大 512 MB</span><span class="select-file">选择视频</span></label><input type="file" id="video-file" accept=".mp4,.mov,.mkv,.webm,.m4v" hidden>
+        <div class="field"><label for="video-title">拟发布标题 <span>建议填写，参与内容审核</span></label><input id="video-title" maxlength="120" placeholder="填写对外发布的标题，用于检查是否与视频内容一致"></div>
+        <section class="content-setup"><div class="card-heading"><h2>视频内容审核</h2><span class="badge">核心检查</span></div><div class="field"><label for="content-profile">送审场景</label><select id="content-profile"><option value="central">央媒供稿</option><option value="news">新闻报道</option><option value="government">政务宣传</option></select></div><div class="content-topics"><span>事实与数据</span><span>报道语境与导向</span><span>政策与规范表述</span><span>人物与机构称谓</span><span>标题与叙事</span><span>声画与字幕一致</span><span>隐私与报道伦理</span><span>素材来源与标注</span></div><p class="help">逐段审读并检查整片叙事，画面与同期口播联合比对。报告区分内容表达风险、内部冲突、资料差异和待核实事实。</p></section>
+        <div class="video-options"><div class="field"><label for="sample-interval">字幕采样精度</label><select id="sample-interval"><option value="1">精细 · 每 1 秒一帧</option><option value="2" selected>标准 · 每 2 秒一帧</option><option value="3">快速 · 每 3 秒一帧</option><option value="5">粗查 · 每 5 秒一帧</option></select></div><div class="field"><label for="subtitle-file">配套字幕 <span>选填 SRT / VTT</span></label><input type="file" id="subtitle-file" accept=".srt,.vtt"></div></div>
+        <div class="field"><label for="video-reference">采访记录 / 政策原文 / 配套稿件 <span>选填，可提高内容比对质量</span></label><textarea id="video-reference" rows="5" maxlength="20000" placeholder="建议写清资料来源与日期，再粘贴原文。&#10;例如：政策适用范围、原始统计口径、受访者确认的姓名职务、资料画面来源及授权说明。&#10;系统会逐字引用资料作为比对依据；不会自动打开链接或上网核实。"></textarea></div>
+        <details class="reference-details"><summary>补充审核要求</summary><textarea id="video-instructions" rows="2" maxlength="3000" placeholder="说明重点检查的内容"></textarea></details>
+        <section class="extended-checks"><div class="card-heading"><h2>技术与字幕检查</h2><span class="badge">辅助检查</span></div><div class="check-grid">
+          <label class="check-label"><input id="check-freeze" type="checkbox" checked>冻结 / 静止画面</label>
+          <label class="check-label"><input id="check-scenes" type="checkbox" checked>镜头切分 / 短镜头</label>
+          <label class="check-label"><input id="check-audio" type="checkbox" checked>响度 / 峰值 / 声道</label>
+          <label class="check-label"><input id="check-captions" type="checkbox" checked>字幕安全区 / 可读性</label>
+          <label class="check-label"><input id="check-alignment" type="checkbox" checked>口播字幕差异 / 时间对照</label>
+        </div><div class="video-options"><div class="field"><label for="vision-limit">AI 画面检查预算</label><select id="vision-limit"><option value="24">经济 · 最多 24 帧</option><option value="48" selected>标准 · 最多 48 帧</option><option value="96">细查 · 最多 96 帧</option></select></div><div class="field"><label for="expected-aspect">期望画面比例</label><select id="expected-aspect"><option value="any">不限比例</option><option value="16:9">横屏 16:9</option><option value="9:16">竖屏 9:16</option><option value="1:1">方形 1:1</option></select></div></div>
+        <p class="help">优先抽查每个镜头；提高帧数上限会增加 API 用量。字幕偏移、阅读速度与漏字幕检查需要配套 SRT/VTT；未提供时只对照底部 OCR 文字。</p>
+        <details class="thresholds"><summary>自定义技术阈值 <span>按接收方实际要求设置</span></summary><div class="threshold-grid">
+          <div class="field"><label for="target-lufs">响度目标（LUFS）</label><input id="target-lufs" type="number" min="-36" max="-9" value="-23" step="1"></div>
+          <div class="field"><label for="loudness-tolerance">响度允许偏差（LU）</label><input id="loudness-tolerance" type="number" min="1" max="12" value="3" step="1"></div>
+          <div class="field"><label for="freeze-seconds">静止提示时长（秒）</label><input id="freeze-seconds" type="number" min="1" max="30" value="3" step="0.5"></div>
+          <div class="field"><label for="safe-margin">字幕边距（画面 %）</label><input id="safe-margin" type="number" min="1" max="15" value="5" step="1"></div>
+          <div class="field"><label for="text-height">文字框最小高度（%）</label><input id="text-height" type="number" min="1" max="8" value="2.5" step="0.1"></div>
+          <div class="field"><label for="max-cps">字幕速度（字/秒）</label><input id="max-cps" type="number" min="3" max="25" value="9" step="1"></div>
+        </div><p class="help">这些是可调整的自查参数，不代表央媒或平台统一验收标准。静态图卡、照片和有意定格可标记为无需处理。</p></details>
+        <div class="field"><label for="video-glossary">自定义易错词 <span>选填，最多 50 条</span></label><textarea id="video-glossary" rows="3" maxlength="3000" placeholder="每行：错误写法=>正确写法&#10;例如：哈儿滨=>哈尔滨"></textarea></div></section>
+        <div class="video-checks"><label class="check-label"><input id="video-ai" type="checkbox" checked>启用八维内容审核</label><label class="check-label"><input id="video-vision" type="checkbox" checked>联合审读画面与同期口播</label></div>
+        <p class="privacy-note">语音与 OCR 在本机处理。启用 AI 后，识别文字、参考稿及选中的抽查画面会发送至 DeepSeek。</p>
+        <div class="form-actions"><span class="muted" id="asr-status">正在检查语音模型…</span><button class="primary" type="submit"><svg><use href="#i-spark"/></svg>开始视频预审 <svg><use href="#i-arrow"/></svg></button></div>
+      </form><aside class="guide-column"><div class="guide-card video-guide"><div class="guide-icon"><svg><use href="#i-video"/></svg></div><div class="eyebrow">EVIDENCE, NOT GUESSWORK</div><h2>不只看字幕，<br>也听真实口播。</h2><div class="pipeline"><div><span>1</span><section><b>听声音</b><p>本地语音转写，保留时间码</p></section></div><div><span>2</span><section><b>读字幕</b><p>OCR 识别画面文字，对照参考稿</p></section></div><div><span>3</span><section><b>查画面</b><p>AI 抽查内容，检测黑场与静音</p></section></div><div><span>4</span><section><b>定位复核</b><p>点击问题，跳转原片查看证据</p></section></div></div></div><div class="quiet-note"><span>i</span><p>抽帧可能遗漏短暂画面。地图边界、版权授权、声音质量与识别出的专名仍需人工复核。</p></div></aside></div>
+    </section>
+    <section class="page" id="page-history" hidden><div class="page-heading"><div><div class="eyebrow">YOUR REVIEW ARCHIVE</div><h1>每一份预审，都有迹可循<span>。</span></h1><p>最近 100 条本地记录，随时查看证据与导出报告。</p></div><button class="secondary" id="refresh-history">刷新记录</button></div><div class="card" id="history-list"></div></section>
+    <section class="page" id="page-settings" hidden><div class="page-heading"><div><div class="eyebrow">CONNECTED TO YOUR WORKFLOW</div><h1>准备好你的审核工作台<span>。</span></h1><p>连接 DeepSeek，配置文字与画面审核模型。</p></div></div><form id="settings-form" class="card settings-card"><div class="card-heading"><h2>DeepSeek 接口</h2><span class="connection badge"></span></div><div class="field"><label for="api-key">API Key</label><input type="password" id="api-key" maxlength="200" autocomplete="new-password" placeholder="输入新密钥；留空保留已保存的密钥"><p class="help">仅保存在本机后端 .env，页面不会读回密钥。</p></div><div class="video-options"><div class="field"><label for="text-model">文字审核模型</label><input id="text-model" value="deepseek-flash" required></div><div class="field"><label for="vision-model">画面审核模型</label><input id="vision-model" value="deepseek-flash" required></div></div><p class="help">固定连接 api.deepseek.com。画面模型需要支持图片输入；文字连接测试不代表视觉能力测试。</p><div class="form-actions"><button type="button" class="secondary" id="test-connection">测试已保存的连接</button><button type="submit" class="primary">保存配置</button></div><div id="connection-result" role="status"></div></form><div class="card settings-card model-note"><h2>本地语音识别</h2><p id="model-status"></p><p>如需安装，在项目目录双击「安装语音模型.cmd」。模型只需下载一次，之后在本机运行。首次下载需要联网。</p><p class="help">本工具为本机单人工作台；稿件、视频和报告保存在 data 目录。删除记录会同时删除对应视频与截图。</p></div></section>
+    <section class="page" id="page-report" hidden><div class="report-heading"><button class="text-button" data-page="history">← 审核记录</button><div class="report-tools" id="report-tools"></div></div><div id="report-content" aria-live="polite"></div></section>
+    <footer class="main-footer"><span>清审 · 让内容更准确，让送审更从容</span><span>AI 辅助预审 · 人工最终确认</span></footer>
+  </main>
+</div><div id="toast" role="status" hidden></div>
+</body></html>
