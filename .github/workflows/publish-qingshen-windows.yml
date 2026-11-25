@@ -1,0 +1,37 @@
+name: Publish the verified Qingshen Windows bundle
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-qingshen-windows.yml']
+permissions:
+  contents: write
+jobs:
+  portable:
+    if: github.repository == '136084599/ai-review-toolkit'
+    runs-on: windows-latest
+    timeout-minutes: 24
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONIOENCODING: utf-8
+      TAG: v1.2-windows-portable
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Build the Windows bundle and validate it in a clean folder
+        run: python packaging/windows/build_windows_portable.py --source . --output dist --cache "${{ runner.temp }}/qingshen-inputs"
+      - name: Publish verified package
+        shell: pwsh
+        run: |
+          gh release view $env:TAG | Out-Null
+          if ($LASTEXITCODE -eq 0) { exit 0 }
+          @'
+          解压后双击 **Start.cmd**。包内包含 Windows x64 Python 3.12、FFmpeg、RapidOCR 和公开 Whisper small 模型。已验证模型离线加载与本机控制台启动。
+
+          本地规则、视频技术检查、转写和 OCR 可使用包内环境。在线 AI 复核由使用者自行配置 DeepSeek Key。包内没有审核记录、视频素材或模型 API 密钥。
+
+          [便携版说明](https://github.com/136084599/ai-review-toolkit/blob/main/packaging/windows/PORTABLE-README.md)
+          '@ | Set-Content -LiteralPath release-notes.md -Encoding utf8
+          gh release create $env:TAG dist/Qingshen-Windows-x64-Portable.zip dist/SHA256SUMS.txt --target $env:GITHUB_SHA --latest --title "清审 Windows x64 懒人包" --notes-file release-notes.md
+          exit $LASTEXITCODE
