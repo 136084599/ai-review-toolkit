@@ -1,5 +1,7 @@
 # 清审 · 内容预审工作台
 
+**[Windows x64 懒人包下载](https://github.com/136084599/ai-review-toolkit/releases/tag/v1.2-windows-portable)**。完整解压后双击 `Start.cmd`，浏览器打开本机工作台。包内带 Python、FFmpeg、RapidOCR 和 Whisper small 模型，使用本地规则和离线媒体检查无需另外下载模型。在线 AI 复核请在「模型设置」配置自己的 DeepSeek Key。 [懒人包说明](packaging/windows/PORTABLE-README.md)
+
 为**央媒供稿、新闻报道和政务宣传**设计的本地 AI 预审工具。包含 AI 审稿、AI 审视频、审核记录、问题定位、报告导出。供编辑在报送领导前自查，最终审核由人工完成。
 
 当前版本 **v1.2**：视频增加独立的八维内容审核、整片叙事审读、同期声画联合判断、对照证据和待核实事实分类；原有技术检查继续保留。新功能对新提交的视频生效，历史报告保持原来的检测结果。
